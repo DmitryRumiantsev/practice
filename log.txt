@@ -1,37 +1,3 @@
-commit e9cbb570c2b49c017f2796276344acf0c01c48d2
-Author: Dmitry Rumiantsev <dr270797@gmail.com>
-Date:   Wed Feb 10 15:40:03 2016 +0300
-
-    Revert "Revert "Add src""
-
-    This reverts commit 7c3e91426dd071473f3188c3476dbe671d57a4ff.
-
-commit 7c3e91426dd071473f3188c3476dbe671d57a4ff
-Author: Dmitry Rumiantsev <dr270797@gmail.com>
-Date:   Wed Feb 10 15:36:52 2016 +0300
-
-    Revert "Add src"
-
-    This reverts commit 53deaf111ba5214ed210d8931a8e16404d21d371.
-
-commit 53deaf111ba5214ed210d8931a8e16404d21d371
-Author: Dmitry Rumiantsev <dr270797@gmail.com>
-Date:   Wed Feb 10 15:33:12 2016 +0300
-
-    Add src
-
-commit 5ace95216afa6fced4c74e0fec091ae9efdacd60
-Author: Dmitry Rumiantsev <dr270797@gmail.com>
-Date:   Wed Feb 10 15:19:26 2016 +0300
-
-    Add log.txt
-
-commit 086851ba3fff3ac1eaf104c4bdc281051c116658
-Author: Dmitry Rumiantsev <dr270797@gmail.com>
-Date:   Wed Feb 10 15:19:08 2016 +0300
-
-    Add status.txt
-
 commit 53ded270e27af6391249f3976a92e14a5e238282
 Author: Dmitry Rumiantsev <dr270797@gmail.com>
 Date:   Wed Feb 10 15:17:25 2016 +0300
