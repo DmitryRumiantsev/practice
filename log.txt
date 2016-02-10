@@ -1,0 +1,5 @@
+commit 53ded270e27af6391249f3976a92e14a5e238282
+Author: Dmitry Rumiantsev <dr270797@gmail.com>
+Date:   Wed Feb 10 15:17:25 2016 +0300
+
+    Add .gitignore
