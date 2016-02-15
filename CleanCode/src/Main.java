@@ -1,5 +1,5 @@
 /**
- * Created by User on 11.02.2016.
+ * Created by Dmitry Rumiantsev on 11.02.2016.
  */
 import java.io.*;
 import java.sql.Timestamp;
@@ -216,12 +216,29 @@ public class Main {
         }
         else {
             try {
-                System.out.println("Input lower bound (either yyyy-mm-dd hh:mm:ss or yyyy-mm-dd hh:mm:ss.[fff...] format)");
+                System.out.println("Input lower bound ( yyyy-mm-dd hh:mm:ss.[fff...] format, minutes and seconds may be omited)");
                 String lowerBound = reader.readLine();
-                Timestamp min = Timestamp.valueOf(lowerBound);
-                System.out.println("Input upper bound (either yyyy-mm-dd hh:mm:ss or yyyy-mm-dd hh:mm:ss.[fff...] format)");
+                StringBuffer buffer = new StringBuffer(lowerBound);
+                if(lowerBound.length()>=13 && lowerBound.length()<19)
+                    while(buffer.length()<19) {
+                        if (buffer.length() % 3 == 1)
+                            buffer.append(":");
+                        else
+                            buffer.append("0");
+                    }
+                Timestamp min = Timestamp.valueOf(buffer.toString());
+                System.out.println("Input upper bound ( yyyy-mm-dd hh:mm:ss.[fff...] format, minutes and seconds may be omited)");
                 String upperBound = reader.readLine();
-                Timestamp max = Timestamp.valueOf(upperBound);
+                buffer.setLength(0);
+                buffer.append(upperBound);
+                if(lowerBound.length()>=13 && lowerBound.length()<19)
+                    while(buffer.length()<19) {
+                        if (buffer.length() % 3 == 1)
+                            buffer.append(":");
+                        else
+                            buffer.append("0");
+                    }
+                Timestamp max = Timestamp.valueOf(buffer.toString());
                 query.append(", min: " + min + ", max: " + max);
                 history.sort(new Message("Hello world", "John Bull"));
                 int found = 0;
