@@ -32,7 +32,7 @@ public class Main {
                 warnings.add("Your message is too long");
                 System.out.println("Warning: your message is too long");
             }
-            query.append("Author: "+author+", Message: "+message+". Added 1 message.");
+            query.append(", Author: "+author+", Message: "+message+". Added 1 message.");
             history.add(new Message(message, author));
             logger.log(Level.INFO,query.toString());
             for(String warning:warnings)
@@ -145,7 +145,7 @@ public class Main {
             if(history.size()==0)
             {
                 warnings.add("Saving empty history will delete the current contents of the file");
-                System.out.println("Warning: Saving empty history will delete the current contents of the file (you're not given a choice");
+                System.out.println("Warning: Saving empty history will delete the current contents of the file (you're not given a choice)");
             }
             gson.toJson(history,writer);
             logger.log(Level.INFO,query.toString());
@@ -178,7 +178,7 @@ public class Main {
                     {
                         if(history.get(i).equals(history.get(j))&& i!=j)
                         {
-                            warnings.add("Multiple messages with the same ID are not allowed. The message "+history.get(j)+" was removed from history.");
+                            warnings.add("Multiple messages with the same ID are not allowed. The message '"+history.get(j)+"' was removed from history.");
                             System.out.println("Warning: Multiple messages with the same ID are not allowed.\n The message "+history.get(j)+" was removed from history.");
                             history.remove(j);
                         }
