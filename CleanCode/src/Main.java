@@ -9,23 +9,27 @@ import java.util.logging.*;
 
  class Main {
 
-    private static final Logger LOGGER = Logger.getLogger(Main.class.getName());
-    private static ArrayList<String> warnings;
-    private static StringBuffer query;
-    private static ArrayList<Message> history;
+     private static final int MAX_FIELD_LENGTH=140;
+     private static final Logger LOGGER = Logger.getLogger(Main.class.getName());
+
+     private static ArrayList<String> warnings;
+     private static StringBuffer query;
+     private static ArrayList<Message> history;
+
     private static void addMessage(BufferedReader reader)
     {
+
         try {
             System.out.println("Input author");
             String author = reader.readLine();
-            if(author.length()>140) {
+            if(author.length()>MAX_FIELD_LENGTH) {
                 warnings.add("Author name is too long");
                 System.out.println("Warning: author name is too long");
             }
 
             System.out.println("Input message");
             String message = reader.readLine();
-            if(message.length()>140) {
+            if(message.length()>MAX_FIELD_LENGTH) {
                 warnings.add("Your message is too long");
                 System.out.println("Warning: your message is too long");
             }
@@ -233,8 +237,11 @@ import java.util.logging.*;
     }
      private static void prepareStringForTimestamp(StringBuffer buffer)
     {
-        if(buffer.length()>=13 && buffer.length()<19) {
-            while (buffer.length() < 19) {
+        int startOfminutes=13;
+        int endOfSeconds=19;
+
+        if(buffer.length()>=startOfminutes && buffer.length()<endOfSeconds) {
+            while (buffer.length() < endOfSeconds) {
                 if (buffer.length() % 3 == 1) {
                     buffer.append(":");
                 }
