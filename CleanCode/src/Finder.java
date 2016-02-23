@@ -22,8 +22,7 @@ public class Finder
         Finder.parameter2 = parameter2;
     }
 
-    public  static LinkedList<Message> findAll(Collection<Message> messageCollection)
-    {
+    public  static LinkedList<Message> findAll(Collection<Message> messageCollection) {
         LinkedList<Message> list = new LinkedList<>();
         for (Message message : messageCollection) {
             if (check(message)) {
@@ -33,8 +32,7 @@ public class Finder
         return list;
     }
 
-    public  static LinkedList<Message> printAll(Collection<Message> messageCollection)
-    {
+    public  static LinkedList<Message> printAll(Collection<Message> messageCollection) {
         LinkedList<Message> list = new LinkedList<>();
         for (Message message : messageCollection) {
             if (check(message)) {
