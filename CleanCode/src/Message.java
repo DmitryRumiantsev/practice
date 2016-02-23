@@ -1,10 +1,8 @@
-package by.bsu.cleancode.cleancode;
-
 import java.sql.Timestamp;
 import java.util.Comparator;
 import java.util.UUID;
-
 class Message implements Comparator<Message> {
+
 
     private final UUID id;
     private final String author;
