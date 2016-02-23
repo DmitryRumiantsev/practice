@@ -14,10 +14,8 @@ import java.util.logging.*;
      private static StringBuffer query;
      private static ArrayList<Message> history;
 
-    private static void addMessage(BufferedReader reader)
+    private static void addMessage(BufferedReader reader) throws IOException
     {
-
-        try {
             System.out.println("Input author");
             String author = reader.readLine();
             if(author.length()>MAX_FIELD_LENGTH) {
@@ -39,21 +37,10 @@ import java.util.logging.*;
             for(String warning:warnings) {
                 LOGGER.log(Level.WARNING, warning);
             }
-        }
-        catch (IOException ex)
-        {
-            LOGGER.log(Level.INFO,query.toString());
-            System.out.println("Exception: "+ex.getMessage());
-            LOGGER.log(Level.SEVERE,ex.getMessage(),ex);
-            for(String warning:warnings) {
-                LOGGER.log(Level.WARNING, warning);
-            }
-        }
     }
 
-    private static void removeMessageById(BufferedReader reader)
+    private static void removeMessageById(BufferedReader reader) throws IOException
     {
-        try {
             System.out.println("Input id");
             String id = reader.readLine();
             query.append(", ID: ").append(id);
@@ -62,17 +49,9 @@ import java.util.logging.*;
 
             query.append(messagesToRemove.size()!=0 ? ". Removed 1 message" : "removed 0 messages");
             LOGGER.log(Level.INFO,query.toString());
-        }
-        catch (IOException ex)
-        {
-            LOGGER.log(Level.INFO,query.toString());
-            System.out.println("Exception: "+ex.getMessage());
-            LOGGER.log(Level.SEVERE,ex.getMessage(),ex);
-        }
     }
-     private static void searchByAuthor(BufferedReader reader)
+     private static void searchByAuthor(BufferedReader reader) throws IOException
     {
-        try {
             System.out.println("Input author");
             String author = reader.readLine();
             query.append(", Author: ").append(author);
@@ -81,17 +60,9 @@ import java.util.logging.*;
 
             query.append(". Found ").append(messagesFound.size()).append(" messages");
             LOGGER.log(Level.INFO,query.toString());
-        }
-        catch (IOException ex)
-        {
-            LOGGER.log(Level.INFO,query.toString());
-            System.out.println("Exception: "+ex.getMessage());
-            LOGGER.log(Level.SEVERE,ex.getMessage(),ex);
-        }
     }
-     private static void searchByLexeme(BufferedReader reader)
+     private static void searchByLexeme(BufferedReader reader) throws IOException
     {
-        try {
             System.out.println("Input lexeme");
             String lexeme = reader.readLine();
             query.append(", Lexeme: ").append(lexeme);
@@ -100,13 +71,6 @@ import java.util.logging.*;
 
             query.append(". Found ").append(messagesFound.size()).append(" messages.");
             LOGGER.log(Level.INFO,query.toString());
-        }
-        catch (IOException ex)
-        {
-            LOGGER.log(Level.INFO,query.toString());
-            System.out.println("Exception: "+ex.getMessage());
-            LOGGER.log(Level.SEVERE,ex.getMessage(),ex);
-        }
     }
      private static void searchByRegex(BufferedReader reader)
     {
@@ -205,13 +169,18 @@ import java.util.logging.*;
         warnings= new ArrayList<>();
         query=new StringBuffer("");
 
+        Handler fileHandler=null;
+        PrintWriter writer=null;
+        PrintStream outPrintStream=null;
+        BufferedReader reader=null;
+
         LOGGER.setUseParentHandlers(false);
         System.setProperty("java.util.logging.SimpleFormatter.format", "%4$-7s   %5$s %6$s%n");
 
         try {
-            Handler fileHandler = new FileHandler("logfile.txt", true);
+            fileHandler = new FileHandler("logfile.txt", true);
 
-            PrintWriter writer = new PrintWriter("logfile.txt");
+            writer = new PrintWriter("logfile.txt");
             writer.print("");
             writer.close();
 
@@ -219,10 +188,10 @@ import java.util.logging.*;
             LOGGER.addHandler(fileHandler);
             LOGGER.setLevel(Level.INFO);
 
-            PrintStream outPrintStream = new PrintStream(new BufferedOutputStream(new FileOutputStream("logfile.txt", true)));  // append is true
+            outPrintStream = new PrintStream(new BufferedOutputStream(new FileOutputStream("logfile.txt", true)));  // append is true
             System.setErr(outPrintStream);    // redirect System.err
 
-            BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+            reader = new BufferedReader(new InputStreamReader(System.in));
             boolean isWorking = true;
             String help = "Type 'add' to add message, 'removeById' to remove message by identifier, 'load' to load from file,\n " +
                     "'save' to save to file. Type 'view' to view history or 'viewTimeRange' to view time range. Type 'searchByAuthor',\n 'searchByLexeme' or 'searchByRegex' to " +
@@ -232,7 +201,7 @@ import java.util.logging.*;
             while (isWorking) {
 
                 warnings.clear();
-                query.setLength(0);
+                query=new StringBuffer("");
 
                 String command = reader.readLine();
                 query.append("Query: ").append(command);
@@ -279,8 +248,28 @@ import java.util.logging.*;
         }
         catch (IOException ex)
         {
+            LOGGER.log(Level.INFO,query.toString());
             System.out.println("Exception: "+ex.getMessage());
             LOGGER.log(Level.SEVERE,ex.getMessage(),ex);
+            for(String warning:warnings) {
+                LOGGER.log(Level.WARNING, warning);
+            }
+        }
+        finally  {
+            try {
+                if(writer!=null)
+                    writer.close();
+                if(outPrintStream!=null)
+                    outPrintStream.close();
+                if(fileHandler!=null)
+                    fileHandler.close();
+                if(reader!=null)
+                    reader.close();
+            }
+            catch (IOException ex) {
+                System.out.println("Exception: " + ex.getMessage());
+                LOGGER.log(Level.SEVERE, ex.getMessage(), ex);
+            }
         }
     }
 }
