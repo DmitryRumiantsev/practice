@@ -2,7 +2,6 @@
 import java.io.*;
 import java.util.ArrayList;
 import com.google.gson.*;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.logging.*;
 
@@ -59,10 +58,7 @@ import java.util.logging.*;
             String id = reader.readLine();
             query.append(", ID: ").append(id);
 
-            Finder.setMode("by id");
-            Finder.setParameter1(id);
-            LinkedList<Message> messagesToRemove=Finder.findAll(history);
-            history.removeAll(messagesToRemove);
+            LinkedList<Message> messagesToRemove=ChatHistoryOperations.removeMessageById(id,history);
 
             query.append(messagesToRemove.size()!=0 ? ". Removed 1 message" : "removed 0 messages");
             LOGGER.log(Level.INFO,query.toString());
@@ -81,9 +77,7 @@ import java.util.logging.*;
             String author = reader.readLine();
             query.append(", Author: ").append(author);
 
-            Finder.setMode("by author");
-            Finder.setParameter1(author);
-            LinkedList<Message> messagesFound=Finder.printAll(history);
+            LinkedList<Message> messagesFound=ChatHistoryOperations.searchByParameter(author,"by author",history);
 
             query.append(". Found ").append(messagesFound.size()).append(" messages");
             LOGGER.log(Level.INFO,query.toString());
@@ -102,9 +96,7 @@ import java.util.logging.*;
             String lexeme = reader.readLine();
             query.append(", Lexeme: ").append(lexeme);
 
-            Finder.setMode("by lexeme");
-            Finder.setParameter1(lexeme);
-            LinkedList<Message> messagesFound=Finder.printAll(history);
+            LinkedList<Message> messagesFound=ChatHistoryOperations.searchByParameter(lexeme,"by lexeme",history);
 
             query.append(". Found ").append(messagesFound.size()).append(" messages.");
             LOGGER.log(Level.INFO,query.toString());
@@ -123,9 +115,7 @@ import java.util.logging.*;
             String patternString = reader.readLine();
             query.append(", Pattern: ").append(patternString);
 
-            Finder.setMode("by regex");
-            Finder.setParameter1(patternString);
-            LinkedList<Message> messagesFound=Finder.printAll(history);
+            LinkedList<Message> messagesFound=ChatHistoryOperations.searchByParameter(patternString,"by regex",history);
 
             query.append(". Found ").append(messagesFound.size()).append(" messages.");
             LOGGER.log(Level.INFO,query.toString());
@@ -142,60 +132,22 @@ import java.util.logging.*;
     {
         try (Writer writer = new PrintWriter(new FileOutputStream(new File("history.json") )) ) {
 
-            Gson gson = new GsonBuilder().create();
-
-            if(history.size()==0)
-            {
-                warnings.add("Saving empty history will delete the current contents of the file");
-                System.out.println("Warning: Saving empty history will delete the current contents of the file (you're not given a choice)");
-            }
-            gson.toJson(history,writer);
-
-            LOGGER.log(Level.INFO,query.toString());
-            for(String warning:warnings) {
-                LOGGER.log(Level.WARNING, warning);
-            }
+            ChatHistoryOperations.storeHistory(writer,history);
         }
         catch(JsonIOException|IOException ex)
         {
             LOGGER.log(Level.INFO,query.toString());
             System.out.println("Exception: "+ex.getMessage());
             LOGGER.log(Level.SEVERE,ex.getMessage(),ex);
-            for(String warning:warnings) {
-                LOGGER.log(Level.WARNING, warning);
-            }
         }
     }
-     private static void removeMessagesWithSameId() {
-
-         Finder.setMode("by id");
-
-         for(int i=0;i<history.size();i++) {
-
-             Finder.setParameter1(history.get(i).getId().toString());
-             LinkedList<Message> messagesWithSameId=Finder.findAll(history);
-
-             if(messagesWithSameId.size()>1) {
-                 messagesWithSameId.pollFirst();
-                 warnings.add("Multiple messages with the same ID are not allowed. Messages '" + messagesWithSameId.toString() + "' were removed from history.");
-                 System.out.println("Warning: Multiple messages with the same ID are not allowed.\n Messages " + messagesWithSameId.toString() + " were removed from history.");
-                 history.removeAll(messagesWithSameId);
-             }
-         }
-     }
      private static void loadHistory()
     {
         try (Reader reader = new FileReader(new File("history.json"))){
 
-            Gson gson = new GsonBuilder().create();
-            Message[] arr1;
-            arr1= gson.fromJson(reader, Message[].class);
-
             query.append(". Removed ").append(history.size()).append(" messages");
 
-            history.clear();
-            Collections.addAll(history, arr1);
-            removeMessagesWithSameId();
+            warnings.addAll(ChatHistoryOperations.loadHistory(reader,history));
 
             query.append(". Added ").append(history.size()).append(" messages.");
             LOGGER.log(Level.INFO,query.toString());
@@ -215,34 +167,10 @@ import java.util.logging.*;
     }
      private static void viewHistory()
     {
-        if(history.size()==0) {
-            System.out.println("History is empty");
-        }
-        else {
-            history.sort(new Message("Hello world", "John Bull"));
-            for (Message message : history) {
-                System.out.println(message + "\n");
-            }
-        }
-
+        ChatHistoryOperations.viewHistory(history);
         LOGGER.log(Level.INFO,query.toString()+". Viewed "+history.size()+" messages.");
     }
-     private static void prepareStringForTimestamp(StringBuffer buffer)
-    {
-        int startOfminutes=13;
-        int endOfSeconds=19;
 
-        if(buffer.length()>=startOfminutes && buffer.length()<endOfSeconds) {
-            while (buffer.length() < endOfSeconds) {
-                if (buffer.length() % 3 == 1) {
-                    buffer.append(":");
-                }
-                else {
-                    buffer.append("0");
-                }
-            }
-        }
-    }
      private static void viewTimeRange(BufferedReader reader)
     {
         if(history.size()==0) {
@@ -253,25 +181,14 @@ import java.util.logging.*;
         else {
             try {
                 System.out.println("Input lower bound ( yyyy-mm-dd hh:mm:ss.[fff...] format, minutes and seconds may be omited)");
-                String lowerBound = reader.readLine();
-                StringBuffer buffer = new StringBuffer(lowerBound);
-                prepareStringForTimestamp(buffer);
-                Finder.setParameter1(buffer.toString());
-
-                query.append(", min: ").append(buffer.toString());
+                StringBuffer lowerBound = new StringBuffer(reader.readLine());
+                query.append(", min: ").append(lowerBound.toString());
 
                 System.out.println("Input upper bound ( yyyy-mm-dd hh:mm:ss.[fff...] format, minutes and seconds may be omited)");
-                String upperBound = reader.readLine();
-                buffer.setLength(0);
-                buffer.append(upperBound);
-                prepareStringForTimestamp(buffer);
-                Finder.setParameter2(buffer.toString());
+                StringBuffer upperBound = new StringBuffer(reader.readLine());
+                query.append(", max: ").append(upperBound.toString());
 
-                query.append(", max: ").append(buffer.toString());
-
-                Finder.setMode("time range");
-                history.sort(new Message("Hello world", "John Bull"));
-                LinkedList<Message> messagesFound=Finder.printAll(history);
+                LinkedList<Message> messagesFound=ChatHistoryOperations.viewTimeRange(lowerBound,upperBound,history);
 
                 LOGGER.log(Level.INFO, query.toString() + ". Viewed " + messagesFound.size() + " messages.");
 
