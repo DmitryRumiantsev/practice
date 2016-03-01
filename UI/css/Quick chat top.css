@@ -25,7 +25,6 @@ ul.topBar {
 }
 .controls{
     position: fixed;
-    width: 20%;
     max-height: 25%;
     list-style-type: none;
     right: 0;
