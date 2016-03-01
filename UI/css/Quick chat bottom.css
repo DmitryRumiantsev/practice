@@ -17,10 +17,10 @@ textarea.message {
     display: inline-block;
 }
 img.serverError {
-    max-height: 30px;
-    max-width: 30px; 
+    max-height: 18%;
+    max-width: 18%;
     position: absolute;
-    margin-top: 4em;
+    top:65%;
     right:1%;
     display: inline-block; 
 }
