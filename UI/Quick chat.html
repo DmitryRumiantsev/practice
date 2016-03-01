@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Quick chat</title>
+
+    <link rel="stylesheet" href="css/Quick chat top.css"/>
+    <link rel="stylesheet" href="css/Quick chat main.css"/>
+    <link rel="stylesheet" href="css/Quick chat bottom.css"/>
+    <link rel="stylesheet" href="css/responsive.css"/>
+    <link rel="stylesheet" href="css/normalize.css"/>
+
+</head>
+
+<body>
+
+    <header class="header">
+
+        <ul class="topBar">
+            <li>
+                <a class="chatName"><h1 class="section-headline">Quick chat</h1></a>
+            </li>
+            <div class="controls">
+            <li>
+                <a>
+                    <p class="changeName" >
+                        Change name</p>
+                </a>
+            </li>
+
+            <li>
+                <a><img class="chatControls" src="pen.png" alt="Edit message"></a>
+            </li>
+            <li>
+                <a><img class="chatControls" src="delete.png" alt="Delete message"></a>
+            </li>
+            </div>
+
+
+        </ul>
+    </header>
+
+    <main>
+    <div class="viewArea">
+        <div class="space">-</div>
+        <div class="yourMessage">
+            <div>11:11 01.01.2016</div>
+            Hello world
+        </div>
+        <div class="yourMessageChanged">
+            <div>11:11 01.01.2016</div>
+            Hello world! (! is a fix)
+        </div>
+        <div class="OthersMessage"><p>
+            <div>User:1</div>
+            <div>12:00 05.02.2016</div>
+            <br> Nice boat!</p></div>
+        <div class="messageChanged"><p>
+            <div>User:1</div>
+            <div>12:30 04.02.2016</div>
+            <br> Wanna rock?</p></div>
+        <div class="messageDeleted">
+            <div>User:1</div>
+            Message was deleted
+        </div>
+
+
+
+    <section class="sendingSection">
+        <button class="enterMessage" type="button">
+            <a><img class="message" src="message_outline.png" alt="Send message"></a>
+        </button>
+        <textarea class="message" placeholder="Input your message. You can change the size of this area if you need."></textarea>
+            <img class="serverError" src="error.png" alt="Server error">
+    </section>
+    <footer>Dmitry Rumiantsev, February 2016, BSU</footer>
+</main>
+
+
+
+</body>
+
+</html>
