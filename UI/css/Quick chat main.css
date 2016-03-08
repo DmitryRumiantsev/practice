@@ -40,7 +40,7 @@ div.yourMessageChanged {
     padding: 20px;
 }
 
-div.OthersMessage {
+div.othersMessage {
     margin-top: 10px;
     border-radius: 20px;
     border: 4px solid #111;
@@ -72,15 +72,27 @@ div.messageChanged {
     max-width: 80%;
 }
 div.messageDeleted {
-    border-radius: 20px;
-    vertical-align: middle;
-    border: 4px dotted #111;
-    background-color: lightpink;
-    margin-top: 10px;
-    max-width: 80%;
-    padding: 20px;
-    color: #AAAAAA;
-}
+     border-radius: 20px;
+     vertical-align: middle;
+     border: 4px dotted #111;
+     background-color: lightpink;
+     margin-top: 10px;
+     max-width: 80%;
+     padding: 20px;
+     color: #AAAAAA;
+ }
+ div.yourMessageDeleted {
+     text-align: right;
+     border-radius: 20px;
+     vertical-align: middle;
+     border: 4px dotted #111;
+     background-color: lightpink;
+     margin-top: 10px;
+     max-width: 80%;
+     margin-left:auto;
+     padding: 20px;
+     color: #AAAAAA;
+ }
 .article {
     float: left;
     margin: 5px;
