@@ -11,12 +11,8 @@ function run(){
 }
 
 function delegateEvent(evtObj) {
-
-	if(evtObj.type === 'change' && evtObj.target.nodeName == 'INPUT'){
-		var labelEl = evtObj.target.parentElement;
-		onToggleItem(labelEl);
-	}
 	if(evtObj.type === 'click'){
+
 	if((evtObj.target.classList.contains('sendMessage')||evtObj.target.classList.contains('send'))){
     		onAddButtonClick(evtObj);
     	}
@@ -26,7 +22,11 @@ function delegateEvent(evtObj) {
 	if((evtObj.target.classList.contains('removeMessage')||evtObj.target.parentElement.classList.contains('removeMessage'))){
     		onStartRemoving(evtObj);
     	}
-    	if(isDeleting){
+    if((evtObj.target.classList.contains('editMessage')||evtObj.target.parentElement.classList.contains('editMessage'))){
+        		onStartEditing(evtObj);
+        	}
+
+    if(isDeleting){
     	if(((evtObj.target.classList.contains('yourMessage')||evtObj.target.classList.contains('yourMessageChanged')))){
                 var messageToRemove=evtObj.target;
                 onRemoveMessage(messageToRemove);
@@ -41,6 +41,21 @@ function delegateEvent(evtObj) {
                     onRemoveMessage(messageToRemove);
             	}
     }
+     if(isEditing){
+        	if(((evtObj.target.classList.contains('yourMessage')||evtObj.target.classList.contains('yourMessageChanged')))){
+                    var messageToEdit=evtObj.target;
+                    onEditMessage(messageToEdit);
+                }
+            else if((evtObj.target.parentElement.classList.contains('yourMessage')||evtObj.target.parentElement.classList.contains('yourMessageChanged'))){
+                var messageToEdit=evtObj.target.parentElement;
+                onEditMessage(messageToEdit);
+                }
+
+        	else if((evtObj.target.parentElement.parentElement.classList.contains('yourMessage')||evtObj.target.parentElement.parentElement.classList.contains('yourMessageChanged'))){
+                        var messageToEdit=evtObj.target.parentElement.parentElement;
+                        onEditMessage(messageToEdit);
+                	}
+        }
 }
 }
 function isInMessage(evtObj,className)
@@ -97,6 +112,11 @@ function onStartRemoving()
     alert("Click on the message you want to remove");
     isDeleting=true;
 }
+function onStartEditing()
+{
+    alert("Click on the message you want to edit");
+    isEditing=true;
+}
 function onRemoveMessage(messageToRemove)
 {
     var result=confirm("Do you really want to remove this message?");
@@ -108,10 +128,28 @@ function onRemoveMessage(messageToRemove)
          isDeleting=false;
         }
 }
+function onEditMessage(messageToEdit)
+{
+    var result=confirm("Do you really want to edit this message?");
+        if(result==false){
+            isEditing=false;
+        }
+        else{
+         editMessage(messageToEdit);
+         isEditing=false;
+        }
+}
 function removeMessage(messageToRemove){
     messageToRemove.className='yourMessageDeleted';
     messageToRemove.childNodes[0].childNodes[3].data='Message was deleted';
 
+}
+function editMessage(messageToEdit){
+    var newText=prompt("Input new message here");
+    if(newText){
+       messageToEdit.className='yourMessageChanged';
+       messageToEdit.childNodes[0].childNodes[3].data=newText;
+    }
 }
 function onToggleItem(labelEl) {
 	if(labelEl.classList.contains('strikeout')) {
