@@ -8,7 +8,7 @@ section.sendingSection {
     height: 25%;
     background-color: #333;       
 }
-textarea.message {
+#messageText {
     width: 70%;
     padding-top: 2px;
     margin-top: 1.5em;
@@ -24,7 +24,7 @@ img.serverError {
     right:1%;
     display: inline-block; 
 }
-button.enterMessage {
+button.send {
     
     padding-top: 2px;
     margin-top: 0.5em;
@@ -36,7 +36,7 @@ button.enterMessage {
 border:none;
 }
 
-img.message {
+img.sendMessage {
     max-height: 100px;
     max-width: 100px;
 }

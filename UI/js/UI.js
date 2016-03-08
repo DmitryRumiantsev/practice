@@ -1,14 +1,15 @@
+var name='Anonymous';
 function run(){
-	var appContainer = document.getElementsByClassName('todos')[0];
+	var appContainer = document.getElementsByClassName('appContainer')[0];
 
 	appContainer.addEventListener('click', delegateEvent);
 	appContainer.addEventListener('change', delegateEvent);
 
-	updateCounter();
+	//updateCounter();
 }
 
 function delegateEvent(evtObj) {
-	if(evtObj.type === 'click' && evtObj.target.classList.contains('todo-button')){
+	if(evtObj.type === 'click' && (evtObj.target.classList.contains('sendMessage')||evtObj.target.classList.contains('send'))){
 		onAddButtonClick(evtObj);
 	}
 	if(evtObj.type === 'change' && evtObj.target.nodeName == 'INPUT'){
@@ -16,14 +17,21 @@ function delegateEvent(evtObj) {
 
 		onToggleItem(labelEl);
 	}
+	if(evtObj.type === 'click' && evtObj.target.classList.contains('changeName')){
+    		onChangeUserName(evtObj);
+    	}
 }
 
+function onChangeUserName(){
+	var result=prompt("Input username",name);
+	if(result)
+	    name=result;
+}
 function onAddButtonClick(){
-	var todoText = document.getElementById('todoText');
-
-	addTodo(todoText.value);
-	todoText.value = '';
-	updateCounter();
+	var messageText = document.getElementById('messageText');
+	addMessage(messageText.value);
+	messageText.value = '';
+	//updateCounter();
 } 
 
 function onToggleItem(labelEl) {
@@ -36,32 +44,45 @@ function onToggleItem(labelEl) {
 	updateCounter();
 }
 
-function addTodo(value) {
+function addMessage(value) {
 	if(!value){
 		return;
 	}
-
-	var item = createItem(value);
-	var items = document.getElementsByClassName('items')[0];
-
-	items.appendChild(item);
-	updateCounter();
+	var message= createMessage(value);
+	var messages = document.getElementsByClassName('viewArea')[0];
+	messages.appendChild(message);
+	//updateCounter();
 }
 
-function createItem(text){
-	var divItem = document.createElement('li');
-	var checkbox = document.createElement('input');
-	checkbox.classList.add('item-check');
-
-	divItem.classList.add('item');
-	checkbox.setAttribute('type', 'checkbox');
-
-	divItem.appendChild(checkbox);
-	divItem.appendChild(document.createTextNode(text));
-
+function createMessage(text){
+	var divItem = document.createElement('div');
+	var paragraph = document.createElement('p');
+	divItem.classList.add('yourMessage');
+	formParagraph(paragraph,text);
+	divItem.appendChild(paragraph);
 	return divItem;
 }
-
+function formParagraph(paragraph,text)
+{
+    var header= document.createElement('div');
+    header.appendChild(document.createTextNode(name));
+    paragraph.appendChild(header);
+    appendDate(paragraph);
+    paragraph.appendChild(document.createTextNode(text));
+}
+function formDate()
+{
+    var today = new Date();
+    return today;
+}
+function appendDate(paragraph)
+{
+    var date= document.createElement('div');
+    var breakItem = document.createElement('br');
+    date.appendChild(document.createTextNode(formDate().toGMTString()));
+    paragraph.appendChild(date);
+     paragraph.appendChild(breakItem);
+}
 function updateCounter(){
 	var items = document.getElementsByClassName('items')[0];
 	var counter = document.getElementsByClassName('counter-holder')[0];

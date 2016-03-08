@@ -10,10 +10,10 @@
     <link rel="stylesheet" href="css/Quick chat bottom.css"/>
     <link rel="stylesheet" href="css/responsive.css"/>
     <link rel="stylesheet" href="css/normalize.css"/>
-
+    <script src="js/UI.js"></script>
 </head>
 
-<body>
+<body class="appContainer" onload="run();">
 
     <header class="header">
 
@@ -68,10 +68,10 @@
 
 
     <section class="sendingSection">
-        <button class="enterMessage" type="button">
-            <a><img class="message" src="message_outline.png" alt="Send message"></a>
+        <button class="send" type="button">
+            <a><img class="sendMessage" src="message_outline.png" alt="Send message"></a>
         </button>
-        <textarea class="message" placeholder="Input your message. You can change the size of this area if you need."></textarea>
+        <textarea id="messageText" placeholder="Input your message. You can change the size of this area if you need."></textarea>
             <img class="serverError" src="error.png" alt="Server error">
     </section>
     <footer>Dmitry Rumiantsev, February 2016, BSU</footer>
