@@ -48,6 +48,9 @@ li a {
 a:hover:not(.chatName) {
     background-color: #000000;
 }
+.sendMessage:hover{
+background-color:#333333;
+}
 .active {
     background-color:#333333;
     max-height: 30px;
