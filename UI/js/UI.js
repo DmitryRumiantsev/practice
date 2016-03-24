@@ -6,8 +6,6 @@ function run(){
 
 	appContainer.addEventListener('click', delegateEvent);
 	appContainer.addEventListener('change', delegateEvent);
-
-	//updateCounter();
 }
 
 function delegateEvent(evtObj) {
@@ -105,7 +103,6 @@ function onAddButtonClick(){
 	var messageText = document.getElementById('messageText');
 	addMessage(messageText.value);
 	messageText.value = '';
-	//updateCounter();
 } 
 function onStartRemoving()
 {
@@ -151,16 +148,6 @@ function editMessage(messageToEdit){
        messageToEdit.childNodes[0].childNodes[3].data=newText;
     }
 }
-function onToggleItem(labelEl) {
-	if(labelEl.classList.contains('strikeout')) {
-		labelEl.classList.remove('strikeout');
-	}
-	else {
-		labelEl.classList.add('strikeout');
-	}
-	updateCounter();
-}
-
 function addMessage(value) {
 	if(!value){
 		return;
@@ -168,7 +155,6 @@ function addMessage(value) {
 	var message= createMessage(value);
 	var messages = document.getElementsByClassName('viewArea')[0];
 	messages.appendChild(message);
-	//updateCounter();
 }
 
 function createMessage(text){
@@ -199,10 +185,4 @@ function appendDate(paragraph)
     date.appendChild(document.createTextNode(formDate().toGMTString()));
     paragraph.appendChild(date);
      paragraph.appendChild(breakItem);
-}
-function updateCounter(){
-	var items = document.getElementsByClassName('items')[0];
-	var counter = document.getElementsByClassName('counter-holder')[0];
-
-    counter.innerText = items.children.length.toString();
 }
