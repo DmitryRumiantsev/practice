@@ -1,0 +1,19 @@
+2016-03-29 19:21:21.278| [by.bsu.up.chat.server.ServerHandler] Received new message from user: hello
+2016-03-29 19:40:03.414| [by.bsu.up.chat.server.ServerHandler] Received new message from user: hello
+2016-03-29 19:40:11.159| [by.bsu.up.chat.server.ServerHandler] Received new message from user: Nice to meet you
+2016-03-29 19:50:05.197| [by.bsu.up.chat.server.ServerHandler] Received new message from user: Hi!
+2016-03-29 19:50:11.479| [by.bsu.up.chat.server.ServerHandler] Received new message from user: Howdy! 
+2016-03-29 19:50:29.957| [by.bsu.up.chat.server.ServerHandler] Received new message from user: I'm Flowey, your best friend!
+2016-03-29 20:22:37.539| [by.bsu.up.chat.server.ServerHandler] Could not parse message.
+2016-03-29 20:23:04.433| [by.bsu.up.chat.server.ServerHandler] Could not parse message.
+2016-03-29 20:23:19.654| [by.bsu.up.chat.server.ServerHandler] Could not parse message.
+2016-03-29 20:26:41.616| [by.bsu.up.chat.server.ServerHandler] Received new message from user: Golly, you must be so confused!
+2016-03-29 20:41:30.266| [by.bsu.up.chat.server.ServerHandler] Received new message from user: Howdy!
+2016-03-29 20:41:41.465| [by.bsu.up.chat.server.ServerHandler] Received new message from user: I'm FLOWEY!
+2016-03-29 20:41:51.067| [by.bsu.up.chat.server.ServerHandler] Received new message from user: FLOWEY the FLOWER!
+2016-03-29 21:01:43.068| [by.bsu.up.chat.server.ServerHandler] Received new message from user: Howdy!
+2016-03-29 21:01:52.704| [by.bsu.up.chat.server.ServerHandler] Received new message from user: I'm FLOWEY!
+2016-03-29 21:02:02.374| [by.bsu.up.chat.server.ServerHandler] Received new message from user: FLOWEY the FLOWER!
+2016-03-29 21:06:03.718| [by.bsu.up.chat.server.ServerHandler] Received new message from user: Howdy!
+2016-03-29 21:06:11.544| [by.bsu.up.chat.server.ServerHandler] Received new message from user: I'm FLOWEY!
+2016-03-29 21:06:20.79| [by.bsu.up.chat.server.ServerHandler] Received new message from user: FLOWEY the FLOWER!
