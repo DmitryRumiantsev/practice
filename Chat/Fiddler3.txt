@@ -1,0 +1,14 @@
+POST http://192.168.56.1:999/chat HTTP/1.1
+User-Agent: Composer
+Host: 192.168.56.1:999
+Content-Length: 48
+
+{"message": "Golly, you must be so confused!"}
+
+HTTP/1.1 200 OK
+Date: Tue, 29 Mar 2016 18:26:41 GMT
+Transfer-encoding: chunked
+Access-control-allow-origin: *
+
+0
+
