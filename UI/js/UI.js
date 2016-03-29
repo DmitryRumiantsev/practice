@@ -1,16 +1,58 @@
 var name='Anonymous';
 var isDeleting=false;
 var isEditing=false;
+var messageList=[];
+
 function run(){
 	var appContainer = document.getElementsByClassName('appContainer')[0];
 
 	appContainer.addEventListener('click', delegateEvent);
 	appContainer.addEventListener('change', delegateEvent);
+    messageList =  [
+    			newMessage('Сделать разметку'),
+    			newMessage('Выучить JavaScript'),
+    			newMessage('Написать чат !')
+    		];
+	render(messageList);
 }
 
+function render(messages) {
+	for(var i = 0; i < messages.length; i++) {
+		renderMessage(messages[i]);
+	}
+}
+
+function renderMessageType(element, message){
+	element.classList.add(message.type);
+	element.firstElementChild.childNodes[0].appendChild(document.createTextNode(message.senderName));
+	element.firstElementChild.childNodes[1].appendChild(document.createTextNode(message.time));
+	element.firstElementChild.appendChild(document.createTextNode(message.text));
+	element.setAttribute('message-id', message.id);
+}
+
+function renderMessage(message){
+	var messages = document.getElementsByClassName('viewArea')[0];
+	var element = elementFromTemplate();
+
+	renderMessageType(element, message);
+	messages.appendChild(element);
+}
+
+function elementFromTemplate() {
+	var template = document.getElementById("message-template");
+	return template.firstElementChild.cloneNode(true);
+}
+function newMessage(text,type) {
+	return {
+	    type:'yourMessage',
+	    senderName: ''+name,
+	    time: ''+ formDate().toGMTString(),
+		text:text,
+		id: '' + uniqueId()
+	};
+}
 function delegateEvent(evtObj) {
 	if(evtObj.type === 'click'){
-
 	if((evtObj.target.classList.contains('sendMessage')||evtObj.target.classList.contains('send'))){
     		onAddButtonClick(evtObj);
     	}
@@ -66,43 +108,48 @@ function onChangeUserName(){
         name=result;
         reassociateMessages(name);
 	}
-
+	var element=document.getElementsByClassName('viewArea')[0];
+	element.innerHTML="";
+    render(messageList);
 }
 function reassociateMessages(name){
-    var messages = document.getElementsByClassName('viewArea')[0];
-    for(var i=0;i<messages.childNodes.length;i++)
+    for(var i=0;i<messageList.length;i++)
     {
-    if(!messages.childNodes[i].classList.contains('space')){
-       var tempName=messages.childNodes[i].childNodes[0].childNodes[0].textContent;
+       var tempName=messageList[i].senderName;
         if(name!=tempName)
-            changeClass(messages.childNodes[i]);
-        else if(!messages.childNodes[i].classList.contains('space') && name==tempName)
-            setOwnership(messages.childNodes[i]);
-            }
+            changeClass(messageList[i]);
+        else
+            setOwnership(messageList[i]);
     }
 }
-function changeClass(element)
+function changeClass(message)
  {
-     if(element.classList.contains('yourMessage'))
-         element.className='othersMessage';
-     if(element.classList.contains('yourMessageChanged'))
-         element.className='messageChanged';
-     if(element.classList.contains('yourMessageDeleted'))
-         element.className='messageDeleted';
+     if(message.type=='yourMessage')
+         message.type='othersMessage';
+     if(message.type=='yourMessageChanged')
+         message.type='messageChanged';
+     if(message.type=='yourMessageDeleted')
+         message.type='messageDeleted';
  }
- function setOwnership(element)
+ function setOwnership(message)
  {
-     if(element.classList.contains('othersMessage'))
-         element.className='yourMessage';
-     if(element.classList.contains('messageChanged'))
-         element.className='yourMessageChanged';
-     if(element.classList.contains('messageDeleted'))
-         element.className='yourMessageDeleted';
+     if(message.type=='othersMessage')
+         message.type='yourMessage';
+     if(message.type=='messageChanged')
+         message.type='yourMessageChanged';
+     if(message.type=='messageDeleted')
+         message.type='yourMessageDeleted';
  }
 function onAddButtonClick(){
 	var messageText = document.getElementById('messageText');
-	addMessage(messageText.value);
-	messageText.value = '';
+    	var message = newMessage(messageText.value);
+
+    	if(messageText.value == '')
+    		return;
+
+    	messageList.push(message);
+    	messageText.value = '';
+    	render([message]);
 } 
 function onStartRemoving()
 {
@@ -136,53 +183,45 @@ function onEditMessage(messageToEdit)
          isEditing=false;
         }
 }
+function indexByElement(element, messages){
+	var id = element.attributes['message-id'].value;
+
+	return messages.findIndex(function(item) {
+		return item.id == id;
+	});
+}
+
 function removeMessage(messageToRemove){
-    messageToRemove.className='yourMessageDeleted';
-    messageToRemove.childNodes[0].childNodes[3].data='Message was deleted';
+    var index = indexByElement(messageToRemove, messageList);
+    var message = messageList[index];
+    message.type='yourMessageDeleted';
+    message.text='Message was deleted';
+    var element=document.getElementsByClassName('viewArea')[0];
+    element.innerHTML="";
+    render(messageList);
 
 }
 function editMessage(messageToEdit){
     var newText=prompt("Input new message here");
     if(newText){
-       messageToEdit.className='yourMessageChanged';
-       messageToEdit.childNodes[0].childNodes[3].data=newText;
+       var index = indexByElement(messageToEdit, messageList);
+       var message = messageList[index];
+       message.type='yourMessageChanged';
+       message.text=newText;
+       var element=document.getElementsByClassName('viewArea')[0];
+       element.innerHTML="";
+       render(messageList);
     }
 }
-function addMessage(value) {
-	if(!value){
-		return;
-	}
-	var message= createMessage(value);
-	var messages = document.getElementsByClassName('viewArea')[0];
-	messages.appendChild(message);
-}
 
-function createMessage(text){
-	var divItem = document.createElement('div');
-	var paragraph = document.createElement('p');
-	divItem.classList.add('yourMessage');
-	formParagraph(paragraph,text);
-	divItem.appendChild(paragraph);
-	return divItem;
-}
-function formParagraph(paragraph,text)
-{
-    var header= document.createElement('div');
-    header.appendChild(document.createTextNode(name));
-    paragraph.appendChild(header);
-    appendDate(paragraph);
-    paragraph.appendChild(document.createTextNode(text));
-}
 function formDate()
 {
     var today = new Date();
     return today;
 }
-function appendDate(paragraph)
-{
-    var date= document.createElement('div');
-    var breakItem = document.createElement('br');
-    date.appendChild(document.createTextNode(formDate().toGMTString()));
-    paragraph.appendChild(date);
-     paragraph.appendChild(breakItem);
+function uniqueId() {
+	var date = Date.now();
+	var random = Math.random() * Math.random();
+
+	return Math.floor(date * random);
 }
