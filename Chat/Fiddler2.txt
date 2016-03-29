@@ -1,0 +1,17 @@
+GET http://192.168.56.1:999/chat?token=TN27EN HTTP/1.1
+Host: 192.168.56.1:999
+Connection: keep-alive
+Cache-Control: max-age=0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8
+Upgrade-Insecure-Requests: 1
+User-Agent: Composer
+Accept-Encoding: gzip, deflate, sdch
+Accept-Language: ru-RU,ru;q=0.8,en-US;q=0.6,en;q=0.4
+
+
+HTTP/1.1 200 OK
+Date: Tue, 29 Mar 2016 18:08:58 GMT
+Access-control-allow-origin: *
+Content-length: 63
+
+{"messages":["I'm Flowey, your best friend!"],"token":"TN35EN"}
