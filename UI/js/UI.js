@@ -8,7 +8,8 @@ function run(){
 
 	appContainer.addEventListener('click', delegateEvent);
 	appContainer.addEventListener('change', delegateEvent);
-    messageList =  [
+	 name=loadName()|| 'Anonymous';
+    messageList =loadMessages() ||  [
     			newMessage('Сделать разметку'),
     			newMessage('Выучить JavaScript'),
     			newMessage('Написать чат !')
@@ -21,7 +22,42 @@ function render(messages) {
 		renderMessage(messages[i]);
 	}
 }
+function loadMessages() {
+	if(typeof(Storage) == "undefined") {
+		alert('localStorage is not accessible');
+		return;
+	}
 
+	var item = localStorage.getItem("MessageList");
+
+	return item && JSON.parse(item);
+}
+function loadName() {
+	if(typeof(Storage) == "undefined") {
+		alert('localStorage is not accessible');
+		return;
+	}
+
+	var userName= localStorage.getItem("Username");
+
+	return userName && JSON.parse(userName);
+}
+function saveName(nameToSave) {
+	if(typeof(Storage) == "undefined") {
+		alert('localStorage is not accessible');
+		return;
+	}
+
+	localStorage.setItem("Username", JSON.stringify(nameToSave));
+}
+function saveMessages(listToSave) {
+	if(typeof(Storage) == "undefined") {
+		alert('localStorage is not accessible');
+		return;
+	}
+
+	localStorage.setItem("MessageList", JSON.stringify(listToSave));
+}
 function renderMessageType(element, message){
 	element.classList.add(message.type);
 	element.firstElementChild.childNodes[0].appendChild(document.createTextNode(message.senderName));
@@ -107,6 +143,8 @@ function onChangeUserName(){
 	if(result){
         name=result;
         reassociateMessages(name);
+        saveMessages(messageList);
+        saveName(name);
 	}
 	var element=document.getElementsByClassName('viewArea')[0];
 	element.innerHTML="";
@@ -148,8 +186,10 @@ function onAddButtonClick(){
     		return;
 
     	messageList.push(message);
+    	saveMessages(messageList);
     	messageText.value = '';
     	render([message]);
+
 } 
 function onStartRemoving()
 {
@@ -198,6 +238,7 @@ function removeMessage(messageToRemove){
     message.text='Message was deleted';
     var element=document.getElementsByClassName('viewArea')[0];
     element.innerHTML="";
+    saveMessages(messageList);
     render(messageList);
 
 }
@@ -210,6 +251,7 @@ function editMessage(messageToEdit){
        message.text=newText;
        var element=document.getElementsByClassName('viewArea')[0];
        element.innerHTML="";
+       saveMessages(messageList);
        render(messageList);
     }
 }
