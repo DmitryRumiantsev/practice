@@ -1,0 +1,13 @@
+GET http://localhost:999/chat?token=TN11EN HTTP/1.1
+User-Agent: Java/1.8.0_77
+Host: localhost:999
+Accept: text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2
+Connection: keep-alive
+
+
+HTTP/1.1 200 OK
+Date: Tue, 29 Mar 2016 19:06:27 GMT
+Access-control-allow-origin: *
+Content-length: 75
+
+{"messages":["Howdy!","I'm FLOWEY!","FLOWEY the FLOWER!"],"token":"TN11EN"}
