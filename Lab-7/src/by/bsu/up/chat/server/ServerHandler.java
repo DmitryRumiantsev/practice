@@ -106,7 +106,18 @@ public class ServerHandler implements HttpHandler {
     }
 
     private Response doDelete(HttpExchange httpExchange) {
-        return Response.withCode(Constants.RESPONSE_CODE_NOT_IMPLEMENTED);
+        String query = httpExchange.getRequestURI().getQuery();
+        if (query == null) {
+            return Response.badRequest("Absent query in request");
+        }
+        Map<String, String> map = queryToMap(query);
+        String messageId = map.get(Constants.REQUEST_PARAM_MESSAGE_ID);
+        if (StringUtils.isEmpty(messageId)) {
+            return Response.badRequest("msgId query parameter is required");
+        }
+        messageStorage.removeMessage(messageId);
+        logger.info(String.format("Remved messages with id="+messageId));
+        return Response.ok();
     }
 
     private Response doOptions(HttpExchange httpExchange) {

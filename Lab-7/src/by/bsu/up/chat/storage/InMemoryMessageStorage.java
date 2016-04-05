@@ -7,6 +7,7 @@ import by.bsu.up.chat.logging.impl.Log;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Iterator;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import java.util.Collections;
@@ -74,7 +75,15 @@ public class InMemoryMessageStorage implements MessageStorage {
 
     @Override
     public synchronized boolean removeMessage(String messageId) {
-        throw new UnsupportedOperationException("Removing of messages is not supported yet");
+        int initialSize=size();
+        for (Iterator<Message> iterator = messages.iterator(); iterator.hasNext();) {
+            Message current = iterator.next();
+            if (current.getId().equals(messageId)) {
+                iterator.remove();
+            }
+        }
+        storeMessages();
+        return initialSize==size();
     }
 
     @Override
