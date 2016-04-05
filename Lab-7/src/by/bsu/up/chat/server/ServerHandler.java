@@ -102,7 +102,17 @@ public class ServerHandler implements HttpHandler {
     }
 
     private Response doPut(HttpExchange httpExchange) {
-        return Response.withCode(Constants.RESPONSE_CODE_NOT_IMPLEMENTED);
+        try {
+            Message fakeMessage = MessageHelper.createFakeMessage(httpExchange.getRequestBody());
+            messageStorage.updateMessage(fakeMessage);
+            logger.info(String.format("Updated messages with id=" + fakeMessage.getId()));
+            return Response.ok();
+        }
+        catch (ParseException e) {
+            logger.error("Could not parse message.", e);
+            return new Response(Constants.RESPONSE_CODE_BAD_REQUEST, "Incorrect request body");
+        }
+
     }
 
     private Response doDelete(HttpExchange httpExchange) {

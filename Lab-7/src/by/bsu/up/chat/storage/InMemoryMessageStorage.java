@@ -70,7 +70,15 @@ public class InMemoryMessageStorage implements MessageStorage {
 
     @Override
     public boolean updateMessage(Message message) {
-        throw new UnsupportedOperationException("Update for messages is not supported yet");
+        boolean result=false;
+        for(Message currentMessage: messages) {
+            if (currentMessage.getId().equals(message.getId())) {
+                currentMessage.setText(message.getText());
+                result=true;
+            }
+        }
+        storeMessages();
+       return result;
     }
 
     @Override
