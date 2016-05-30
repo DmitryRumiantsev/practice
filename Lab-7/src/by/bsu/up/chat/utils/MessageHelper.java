@@ -115,19 +115,21 @@ public class MessageHelper {
         JSONObject jsonObject = stringToJsonObject(inputStreamToString(inputStream));
         String id = ((String) jsonObject.get(Constants.Message.FIELD_ID));
         String author = ((String) jsonObject.get(Constants.Message.FIELD_AUTHOR));
-        long timestamp = ((long) jsonObject.get(Constants.Message.FIELD_TIMESTAMP));
+        String timestamp = ((String) jsonObject.get(Constants.Message.FIELD_TIMESTAMP));
         String text = ((String) jsonObject.get(Constants.Message.FIELD_TEXT));
+        String type = ((String) jsonObject.get(Constants.Message.FIELD_TYPE));
         Message message = new Message();
         message.setId(id);
         message.setAuthor(author);
         message.setTimestamp(timestamp);
         message.setText(text);
+        message.setType(type);
         return message;
     }
     public static Message createFakeMessage(InputStream inputStream) throws ParseException {
         JSONObject jsonObject = stringToJsonObject(inputStreamToString(inputStream));
         String id = ((String) jsonObject.get(Constants.Message.FIELD_ID));
-        long timestamp=11111111;
+        String timestamp="11111";
         String author="Null";
         String text = ((String) jsonObject.get(Constants.Message.FIELD_TEXT));
         Message message = new Message();
@@ -135,6 +137,12 @@ public class MessageHelper {
         message.setAuthor(author);
         message.setTimestamp(timestamp);
         message.setText(text);
+        if(jsonObject.get(Constants.Message.FIELD_TYPE)==null){
+            message.setType("fake");
+        }
+        else{
+            message.setType((String)jsonObject.get(Constants.Message.FIELD_TYPE));
+        }
         return message;
     }
 
@@ -163,6 +171,7 @@ public class MessageHelper {
         jsonObject.put(Constants.Message.FIELD_AUTHOR, message.getAuthor());
         jsonObject.put(Constants.Message.FIELD_TIMESTAMP, message.getTimestamp());
         jsonObject.put(Constants.Message.FIELD_TEXT, message.getText());
+        jsonObject.put(Constants.Message.FIELD_TYPE, message.getType());
         return jsonObject;
     }
 }

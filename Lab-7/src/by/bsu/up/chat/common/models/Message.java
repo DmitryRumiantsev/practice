@@ -6,8 +6,17 @@ public class Message implements Serializable {
 
     private String id;
     private String author;
-    private long timestamp;
+    private String timestamp;
     private String text;
+    private String type;
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
 
     public String getId() {
         return id;
@@ -25,11 +34,11 @@ public class Message implements Serializable {
         this.author = author;
     }
 
-    public long getTimestamp() {
+    public String getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(long timestamp) {
+    public void setTimestamp(String timestamp) {
         this.timestamp = timestamp;
     }
 
@@ -42,5 +51,5 @@ public class Message implements Serializable {
     }
 
     @Override
-    public String toString() {return id+" - "+author+" - "+timestamp+" - "+text;}
+    public String toString() {return id+" - "+author+" - "+timestamp+" - "+text+" - "+type;}
 }

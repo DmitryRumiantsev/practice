@@ -57,6 +57,10 @@ public class InMemoryMessageStorage implements MessageStorage {
             arr1 = gson.fromJson(reader, Message[].class);
             messages.clear();
             Collections.addAll(messages, arr1);
+            for(Message current:messages){
+
+                current.setType("othersMessage");
+            }
         }
         catch (IOException e){
 
@@ -72,8 +76,15 @@ public class InMemoryMessageStorage implements MessageStorage {
     public boolean updateMessage(Message message) {
         boolean result=false;
         for(Message currentMessage: messages) {
-            if (currentMessage.getId().equals(message.getId())) {
+            if (currentMessage.getId().equals(message.getId())&& !currentMessage.getType().contains("MessageDeleted")) {
                 currentMessage.setText(message.getText());
+                if(message.getType().equals("fake")) {
+
+                    currentMessage.setType("yourMessageChanged");
+                }
+                else{
+                    currentMessage.setType(message.getType());
+                }
                 result=true;
             }
         }
@@ -83,15 +94,16 @@ public class InMemoryMessageStorage implements MessageStorage {
 
     @Override
     public synchronized boolean removeMessage(String messageId) {
-        int initialSize=size();
         for (Iterator<Message> iterator = messages.iterator(); iterator.hasNext();) {
             Message current = iterator.next();
             if (current.getId().equals(messageId)) {
-                iterator.remove();
+                current.setText("message was deleted");
+                current.setType("yourMessageDeleted");
+                return true;
             }
         }
         storeMessages();
-        return initialSize==size();
+        return false;
     }
 
     @Override
