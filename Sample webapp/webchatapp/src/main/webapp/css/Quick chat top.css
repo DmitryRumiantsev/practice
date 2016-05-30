@@ -1,0 +1,67 @@
+
+.section-headline {
+    font-family: 'Open Sans Bold';
+    color: #9783E9;
+    font-size: 38.5px;
+    line-height: 38.5px;
+}
+p.changeName {
+    font-family: 'Open Sans Bold';
+    cursor: pointer;
+    color: snow;
+    font-size: 100%;
+    line-height: 100%;
+    text-align: center;
+}
+ul.topBar {
+    position: fixed;
+    width: 100%;
+    max-height: 25%;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333;
+}
+.controls{
+    position: fixed;
+    max-height: 25%;
+    list-style-type: none;
+    right: 0;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333;
+}
+li {
+    float: left;
+    align-content: center;
+    vertical-align: center;
+}
+li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+a:hover:not(.chatName) {
+    background-color: #000000;
+}
+.sendMessage:hover{
+background-color:#333333;
+}
+.active {
+    background-color:#333333;
+    max-height: 30px;
+}
+
+img.chatControls {
+    max-height: 20px;
+    max-width: 20px;  
+}
+
+
+
+
+

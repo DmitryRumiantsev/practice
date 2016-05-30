@@ -8,21 +8,7 @@ var Application = {
     isDeleting:false,
     isEditing:false
 };
-function loadMessages(done) {
-    var url = Application.mainUrl + '?token=' + Application.token;
-
-    var element=document.getElementsByClassName('viewArea')[0];
-    element.innerHTML="";
-    ajax('GET', url, null, function(responseText){
-        var response = JSON.parse(responseText);
-
-        Application.messageList = response.messages;
-        // Application.token = response.token;
-        done();
-    });
-}
 function run(){
-    window.setInterval('this.loadMessages(function (){render(Application.messageList);})', 1000);
 	var appContainer = document.getElementsByClassName('appContainer')[0];
 
 	appContainer.addEventListener('click', delegateEvent);
@@ -37,7 +23,17 @@ function render(messages) {
 		renderMessage(messages[i]);
 	}
 }
+function loadMessages(done) {
+    var url = Application.mainUrl + '?token=' + Application.token;
 
+    ajax('GET', url, null, function(responseText){
+        var response = JSON.parse(responseText);
+
+        Application.messageList = response.messages;
+        Application.token = response.token;
+        done();
+    });
+}
 function loadName() {
 	if(typeof(Storage) == "undefined") {
 		alert('localStorage is not accessible');
@@ -214,8 +210,8 @@ function onAddButtonClick(evtObj,done){
         var element=document.getElementsByClassName('viewArea')[0];
         element.innerHTML="";
         ajax('POST', Application.mainUrl, JSON.stringify(message), function(){
-        // Application.messageList.push(message);
-            //done();
+         Application.messageList.push(message);
+            done();
         });
 
 
@@ -275,10 +271,10 @@ function removeMessage(messageToRemove,done){
 
     ajax('DELETE', Application.mainUrl, JSON.stringify(messageToDelete), function(){
        // Application.taskList.splice(index, 1);
-       // done();
+        done();
     });
     //  saveMessages(Application.messageList);
-    //render(Application.messageList);
+    render(Application.messageList);
 
 }
 function editMessage(messageToEdit,done){
@@ -296,9 +292,9 @@ function editMessage(messageToEdit,done){
             text:newText,
         };
         ajax('PUT', Application.mainUrl, JSON.stringify(messageToChange), function(){
-           // done();
+            done();
         });
-      // saveMessages(Application.messageList);
+       saveMessages(Application.messageList);
       // render(Application.messageList);
     }
 }

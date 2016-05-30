@@ -59,7 +59,13 @@ public class InMemoryMessageStorage implements MessageStorage {
             Collections.addAll(messages, arr1);
             for(Message current:messages){
 
-                current.setType("othersMessage");
+               // current.setType("othersMessage");
+                if(current.getType().equals("yourMessage"))
+                    current.setType("othersMessage");
+                if(current.getType().equals("yourMessageChanged"))
+                    current.setType("messageChanged");
+                if(current.getType().equals("yourMessageDeleted"))
+                    current.setType("messageDeleted");
             }
         }
         catch (IOException e){
